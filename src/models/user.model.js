@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema({
     default:"CUSTOMER"
   },
   mobile: {
-    type: String,
+    type: Number,
   },
   addresses: [
     {

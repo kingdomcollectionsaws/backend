@@ -20,6 +20,15 @@ const reviewSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  image:{
+    type:String
+  },
+  name:{
+    type:String
+  },
+  ratings:{
+    type:Number
+  }
 });
 
 const Review = mongoose.model('reviews', reviewSchema);

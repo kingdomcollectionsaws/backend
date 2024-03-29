@@ -1,44 +1,43 @@
-const razorpay = require("../config/razorpayClient");
+
 const orderService=require("../services/order.service.js");
+const stripe = require('stripe')(process.env.STRIPE_KEY)
 
 const createPaymentLink= async (orderId)=>{
     // const { amount, currency, receipt, notes } = reqData;
     
 
     try {
-        
         const order = await orderService.findOrderById(orderId);
-    
-        const paymentLinkRequest = {
-          amount: order.totalPrice * 100,
-          currency: 'INR',
-          customer: {
-            name: order.user.firstName + ' ' + order.user.lastName,
-            contact: order.user.mobile,
-            email: order.user.email,
+
+        const line_items = order.orderItems.map((i)=>(
+         {
+          price_data:{
+            currency:"usd",
+            product_data: {
+                 name:i.product.title,
+                images:[i.product.imageUrl[0]]  
+             },
+             unit_amount:Math.floor(order.totalPrice*100)
           },
-          notify: {
-            sms: true,
-            email: true,
-          },
-          reminder_enable: true,
-          callback_url: `https://codewithzosh-ecommerce-mern.vercel.app/payment/${orderId}`,
-          callback_method: 'get',
-        };
-    
-        const paymentLink = await razorpay.paymentLink.create(paymentLinkRequest);
-    
-        const paymentLinkId = paymentLink.id;
-        const payment_link_url = paymentLink.short_url;
-    
-     
+          quantity:i.quantity
+         }
+        ))
+
+        const session = await stripe.checkout.sessions.create({
+          payment_method_types:["card"],
+         line_items:line_items,
+         mode:"payment",
+          success_url:`${process.env.FRONTEND_URL}/account/order/${orderId}/{CHECKOUT_SESSION_ID}`,
+         cancel_url:`${process.env.FRONTEND_URL}/cart`,
+         })
+console.log({id:session.id});
+        return({id:session.id})
     
         // Return the payment link URL and ID in the response
-        const resData = {
-          paymentLinkId: paymentLinkId,
-          payment_link_url,
-        };
-        return resData;
+        // const resData = {
+        //   paymentLinkId: paymentLinkId,
+        // };
+        // return resData;
       } catch (error) {
         console.error('Error creating payment link:', error);
         throw new Error(error.message);
@@ -52,23 +51,15 @@ const updatePaymentInformation=async(reqData)=>{
   try {
     // Fetch order details (You will need to implement the 'orderService.findOrderById' function)
     const order = await orderService.findOrderById(orderId);
-
-    // Fetch the payment details using the payment ID
-    const payment = await razorpay.payments.fetch(paymentId);
-  
-
-    if (payment.status === 'captured') {
-     
-
+    // Fetch he payment details using the payment ID
+    const payment = await stripe.checkout.sessions.retrieve(paymentId);
+    console.log(payment.status );
+    if (payment.status == 'complete') {
       order.paymentDetails.paymentId=paymentId;
       order.paymentDetails.status='COMPLETED'; 
       order.orderStatus='PLACED';
-     
-
-     
       await order.save()
     }
-    console.log( 'payment status',order);
     const resData = { message: 'Your order is placed', success: true };
     return resData
   } catch (error) {

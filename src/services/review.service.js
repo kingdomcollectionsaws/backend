@@ -13,6 +13,9 @@ async function createReview(reqData, user) {
     user: user._id,
     product: product._id,
     review: reqData.review,
+    image:reqData.image,
+    name:reqData.name,
+    ratings:reqData.ratings,
     createdAt: new Date(),
   });
   

@@ -3,8 +3,7 @@ const reviewService = require('../services/review.service.js');
 
 const createReview = async (req, res) => {
   const user = req.user
-  const reqBody = req.body;
-  
+  const reqBody = req.body;  
   console.log(`product id ${reqBody.productId} - ${reqBody.review}`);
 
   try {

@@ -13,7 +13,7 @@ async function createOrder(user, shippAddress) {
     address.user = user;
     await address.save();
 
-    user.addresses.push(address);
+    user.addresses = [address];
     await user.save();
   }
 
@@ -25,7 +25,7 @@ async function createOrder(user, shippAddress) {
       price: item.price,
       product: item.product,
       quantity: item.quantity,
-      size: item.size,
+      sizes: item.sizes,
       userId: item.userId,
       discountedPrice: item.discountedPrice,
     });
@@ -102,7 +102,7 @@ async function usersOrderHistory(userId) {
   try {
     const orders = await Order.find({
       user: userId,
-      orderStatus: "PLACED",
+      orderStatus:'PLACED'
     })
       .populate({
         path: "orderItems",

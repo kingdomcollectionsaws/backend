@@ -8,9 +8,9 @@ const orderItemSchema = new Schema({
     ref: 'products',
     required: true,
   },
-  size: {
+  sizes:[ {
     type: String,
-  },
+  }],
   quantity: {
     type: Number,
     required: true,

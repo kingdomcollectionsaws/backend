@@ -8,7 +8,6 @@ async function createCartItem(cartItemData) {
   cartItem.quantity = 1;
   cartItem.price = cartItem.product.price * cartItem.quantity;
   cartItem.discountedPrice = cartItem.product.discountedPrice * cartItem.quantity;
-
   const createdCartItem = await cartItem.save();
   return createdCartItem;
 }
@@ -16,7 +15,7 @@ async function createCartItem(cartItemData) {
 // Update an existing cart item
 async function updateCartItem(userId, cartItemId, cartItemData) {
   const item = await findCartItemById(cartItemId)
-   console.log("cartItemData ",item)
+   //console.log("cartItemData ",item)
 
   if(!item){
     throw new Error("cart item not found : ",cartItemId)
@@ -30,10 +29,10 @@ async function updateCartItem(userId, cartItemId, cartItemData) {
  
 
   if (user.id === userId.toString()) {
+   item.sizes = cartItemData.sizes;
     item.quantity = cartItemData.quantity;
     item.price = item.quantity * item.product.price;
     item.discountedPrice = item.quantity * item.product.discountedPrice;
-
     const updatedCartItem = await item.save();
     return updatedCartItem;
   } else {

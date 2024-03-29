@@ -28,6 +28,7 @@ async function findUserCart(userId) {
     totalPrice += cartItem.price;
     totalDiscountedPrice += cartItem.discountedPrice;
     totalItem += cartItem.quantity;
+
   }
 
   cart.totalPrice = totalPrice;
@@ -46,8 +47,6 @@ async function addCartItem(userId, req) {
   const product = await Product.findById(req.productId);
 
   const isPresent = await CartItem.findOne({ cart: cart._id, product: product._id, userId });
-  
-console.log(product);
   if (!isPresent) {
     const cartItem = new CartItem({
       product: product._id,
@@ -55,12 +54,9 @@ console.log(product);
       quantity: 1,
       userId,
       price: product.discountedPrice,
-      
-      discountedPrice:product.discountedPrice
+      discountedPrice:product.discountedPrice,
+      sizes:req.sizes
     });
-
-   
-
     const createdCartItem = await cartItem.save();
     cart.cartItems.push(createdCartItem);
     await cart.save();
