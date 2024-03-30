@@ -44,5 +44,3 @@ const adminOrderRoutes=require("./routes/adminOrder.routes.js");
 app.use("/api/admin/orders",adminOrderRoutes);
 
 module.exports={app};
-//app.use('/.netlify/index',router)
-//module.exports.handler = serverless(app)

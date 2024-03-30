@@ -1,4 +1,5 @@
 
+const Review = require('../models/review.model.js');
 const reviewService = require('../services/review.service.js');
 
 const createReview = async (req, res) => {
@@ -16,7 +17,16 @@ const createReview = async (req, res) => {
     return res.status(500).json({ error: 'Something went wrong' });
   }
 };
+const allProductsReviews = async(req,res)=>{
+  try {
+    const reviews = await Review.find();
+    res.json(reviews)
+  
+} catch (error) {
+  console.log(error);
+}
 
+}
 const getAllReview = async (req, res) => {
   const productId = req.params.productId;
   console.log("product id ",productId)
@@ -30,4 +40,4 @@ const getAllReview = async (req, res) => {
   }
 };
 
-module.exports = {createReview,getAllReview}
+module.exports = {createReview,getAllReview,allProductsReviews}
