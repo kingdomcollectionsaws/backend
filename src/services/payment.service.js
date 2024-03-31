@@ -58,6 +58,12 @@ const updatePaymentInformation=async(reqData)=>{
       order.paymentDetails.paymentId=paymentId;
       order.paymentDetails.status='COMPLETED'; 
       order.orderStatus='PLACED';
+      
+        // Call FedEx API to create shipment
+          //  const shippingLabels = await createShipment(order); // Implement createShipment function
+
+            // Save shipping labels to the order or send them to the user
+        //    order.shippingLabels = shippingLabels; 
       await order.save()
     }
     const resData = { message: 'Your order is placed', success: true };
@@ -67,5 +73,34 @@ const updatePaymentInformation=async(reqData)=>{
     throw new Error(error.message)
   }
 }
+
+
+// const createShipment = async (order) => {
+//   try {
+//       // Construct the shipment request based on the order details
+//       const shipmentRequestXml = constructShipmentRequest(order); // Implement this function
+
+//       // Make a request to the FedEx shipping API endpoint
+//       const response = await axios.post(fedexApiEndpoint, shipmentRequestXml, {
+//           headers: {
+//               'Content-Type': 'text/xml',
+//               'Content-Length': shipmentRequestXml.length
+//           },
+//           auth: {
+//               username: fedexApiKey,
+//               password: fedexApiPassword
+//           }
+//       });
+
+//       // Handle the response from FedEx API and extract shipping labels
+//       const shippingLabels = parseShippingLabels(response.data); // Implement this function
+
+//       // Return the shipping labels
+//       return shippingLabels;
+//   } catch (error) {
+//       console.error('Error creating shipment with FedEx API:', error);
+//       throw error;
+//   }
+// };
 
 module.exports={createPaymentLink,updatePaymentInformation}
