@@ -9,7 +9,7 @@ const createPaymentLink= async (orderId)=>{
     try {
         const order = await orderService.findOrderById(orderId);
 
-        const line_items = order.orderItems.map((i)=>(
+        const line_item = order.orderItems.map((i)=>(
          {
           price_data:{
             currency:"usd",
@@ -17,15 +17,16 @@ const createPaymentLink= async (orderId)=>{
                  name:i.product.title,
                 images:[i.product.imageUrl[0]]  
              },
-             unit_amount:Math.floor(order.totalPrice*100)
+            // unit_amount:Math.floor(order.totalPrice*100)
+             unit_amount:Math.floor(i.product.discountedPrice*100)
           },
           quantity:i.quantity
          }
         ))
-
+        line_item[line_item.length-1].price_data.unit_amount =line_item[line_item.length-1].price_data.unit_amount+10000;
         const session = await stripe.checkout.sessions.create({
           payment_method_types:["card"],
-         line_items:line_items,
+         line_items:line_item,
          mode:"payment",
           success_url:`${process.env.FRONTEND_URL}/account/order/${orderId}/{CHECKOUT_SESSION_ID}`,
          cancel_url:`${process.env.FRONTEND_URL}/cart`,
