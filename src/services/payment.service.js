@@ -23,7 +23,6 @@ const createPaymentLink= async (orderId)=>{
           quantity:i.quantity
          }
         ))
-        line_item[line_item.length-1].price_data.unit_amount =line_item[line_item.length-1].price_data.unit_amount+10000;
         const session = await stripe.checkout.sessions.create({
           payment_method_types:["card"],
          line_items:line_item,
@@ -67,7 +66,7 @@ const updatePaymentInformation=async(reqData)=>{
         //    order.shippingLabels = shippingLabels; 
       await order.save()
     }
-    const resData = { message: 'Your order is placed', success: true };
+    const resData = {order:order, success: true };
     return resData
   } catch (error) {
     console.error('Error processing payment:', error);

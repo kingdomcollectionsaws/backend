@@ -33,7 +33,7 @@ async function findUserCart(userId) {
 
   cart.totalPrice = totalPrice;
   cart.totalItem = totalItem;
-  cart.totalDiscountedPrice = totalDiscountedPrice+100;
+  cart.totalDiscountedPrice = totalDiscountedPrice;
   cart.discounte = totalPrice - totalDiscountedPrice;
 
   // const updatedCart = await cart.save();
