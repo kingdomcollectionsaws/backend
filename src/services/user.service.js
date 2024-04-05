@@ -1,7 +1,8 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const User = require('../models/user.model.js');
-const jwtProvider=require("../config/jwtProvider")
+const jwtProvider=require("../config/jwtProvider");
+const { findOne } = require('../models/address.model.js');
 
 const createUser = async (userData)=>{
     try {
@@ -29,7 +30,29 @@ const createUser = async (userData)=>{
     }
 
 }
+const updateUser = async(data,userId)=>{
+    try {
+        let {firstName,lastName,email,password,mobile} = data;
+        let user = await User.findById(userId);
+        if(!user){
+            return {msg:"no user found",success:true}
+        }
 
+        user.firstName = firstName || user.firstName ;
+        user.lastName = lastName || user.lastName;
+        user.email = email || user.email;
+        password = await bcrypt.hash(password,8);
+        user.password =  password ||  user.password ;
+        user.mobile = mobile || user.mobile;
+        user.role = 'CUSTOMER' || user.role;
+console.log(user);
+        user.save()
+        return {msg:"user updated successfully",success:true}
+    } catch (error) {
+        throw new Error(error.message)
+    }
+
+}
 const findUserById=async(userId)=>{
     try {
         const user = await User.findById(userId);
@@ -96,5 +119,6 @@ module.exports={
     findUserById,
     getUserProfileByToken,
     getUserByEmail,
-    getAllUsers
+    getAllUsers,
+    updateUser
 }

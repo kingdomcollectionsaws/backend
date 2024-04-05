@@ -17,7 +17,17 @@ const getUserProfile=async (req,res)=>{
         return res.status(500).send({error:error.message})
     }
 }
-
+const updateUserDetails = async(req,res)=>{
+    try {
+        const user = req.user;
+        const data = req.body;
+        const updatedUser = await userService.updateUser(data,user);
+        res.status(200).send(updatedUser)
+        
+    } catch (error) {
+        return res.status(500).send({error:error.message})
+    }
+}
 const getAllUsers=async(req,res)=>{
     try {
         const users=await userService.getAllUsers()
@@ -27,4 +37,4 @@ const getAllUsers=async(req,res)=>{
     }
 }
 
-module.exports={getUserProfile,getAllUsers}
+module.exports={getUserProfile,getAllUsers,updateUserDetails}
