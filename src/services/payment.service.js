@@ -27,6 +27,7 @@ const createPaymentLink= async (orderId)=>{
           payment_method_types:["card"],
          line_items:line_item,
          mode:"payment",
+         billing_address_collection:"required",
           success_url:`${process.env.FRONTEND_URL}/account/order/${orderId}/{CHECKOUT_SESSION_ID}`,
          cancel_url:`${process.env.FRONTEND_URL}/cart`,
          })
