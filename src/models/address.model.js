@@ -30,8 +30,50 @@ const userSchema = new mongoose.Schema({
     ref: 'users',
   },
   mobile: {
+    type:   Number,
+  },
+  country:{
     type: String,
   },
+  email:{
+    type:String,
+  },
+  billing:{
+    
+      firstName: {
+        type: String,
+        required: true,
+      },
+      lastName: {
+        type: String,
+        required: true,
+      },
+      streetAddress: {
+        type: String,
+        required: true,
+      },
+      city: {
+        type: String,
+        required: true,
+      },
+      state: {
+        type: String,
+        required: true,
+      },
+      zipCode: {
+        type: String,
+        required: true,
+      },
+      mobile: {
+        type:   Number,
+      },
+      country:{
+        type: String,
+      },
+      email:{
+        type:String,
+      },
+  }
 });
 
 const Address = mongoose.model('addresses', userSchema);

@@ -5,15 +5,15 @@ const cartService = require("../services/cart.service.js");
 
 async function createOrder(user, shippAddress) {
   let address;
-  if (shippAddress._id) {
+   if (shippAddress._id) {
     let existedAddress = await Address.findById(shippAddress._id);
     address = existedAddress;
-  } else {
+   } else {
     address = new Address(shippAddress);
     address.user = user;
     await address.save();
 
-    user.addresses = [address];
+    user.addresses = address;
     await user.save();
   }
 

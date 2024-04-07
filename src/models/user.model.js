@@ -26,12 +26,11 @@ const userSchema = new mongoose.Schema({
   mobile: {
     type: Number,
   },
-  addresses: [
+  addresses: 
     {
         type: mongoose.Schema.Types.ObjectId,
         ref: "addresses",
     },
-  ], 
   paymentInformation: [
     {
         type: mongoose.Schema.Types.ObjectId,
