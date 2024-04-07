@@ -38,6 +38,9 @@ const userSchema = new mongoose.Schema({
   email:{
     type:String,
   },
+  note:{
+    type:String,
+  },
   billing:{
     
       firstName: {
