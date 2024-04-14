@@ -10,7 +10,7 @@ async function createOrder(user, shippAddress) {
     address = existedAddress;
    } else {
     address = new Address(shippAddress);
-    address.user = user;
+   // address.user = user;
     await address.save();
 
     user.addresses = address;
@@ -44,7 +44,7 @@ async function createOrder(user, shippAddress) {
     shippingAddress: address,
     orderDate: new Date(),
     orderStatus: "PENDING", // Assuming OrderStatus is a string enum or a valid string value
-    "paymentDetails.status": "PENDING", // Assuming PaymentStatus is nested under 'paymentDetails'
+   // "paymentDetails.status": "PENDING", // Assuming PaymentStatus is nested under 'paymentDetails'
     createdAt: new Date(),
   });
 
