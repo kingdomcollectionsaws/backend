@@ -22,7 +22,7 @@ const getAllOrdersAddress = async (req, res) => {
 const getAllusers = async (req, res) => {
   try {
     const users = await User.find();
-    res.status(500).send(users);
+    return   res.status(500).send(users);
   } catch (error) {
     res.status(500).send({ error: "Something went wrong" });
   }
