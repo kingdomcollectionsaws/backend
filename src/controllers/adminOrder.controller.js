@@ -1,5 +1,6 @@
 
 const Address = require("../models/address.model");
+const User = require("../models/user.model");
 const orderService = require("../services/order.service");
 
 const getAllOrders = async (req, res) => {
@@ -14,6 +15,14 @@ const getAllOrdersAddress = async (req, res) => {
   try {
     const address = await Address.find();
     return res.status(202).send(address);
+  } catch (error) {
+    res.status(500).send({ error: "Something went wrong" });
+  }
+};
+const getAllusers = async (req, res) => {
+  try {
+    const users = await User.find();
+    res.status(500).send(users);
   } catch (error) {
     res.status(500).send({ error: "Something went wrong" });
   }
@@ -79,5 +88,6 @@ module.exports = {
   deliverOrder,
   cancelledOrder,
   deleteOrder,
-  getAllOrdersAddress
+  getAllOrdersAddress,
+  getAllusers
 };
