@@ -59,7 +59,7 @@ const orderSchema = new Schema({
     type: Number,
     required: true,
   },
-},{timestamps:'true'});
+},{timestamps:true});
 
 const Order = mongoose.model('orders', orderSchema);
 

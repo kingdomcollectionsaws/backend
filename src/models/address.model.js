@@ -77,7 +77,7 @@ const userSchema = new mongoose.Schema({
         type:String,
       },
   }
-},{timestamps:'true'});
+},{timestamps:true});
 
 const Address = mongoose.model('addresses', userSchema);
 

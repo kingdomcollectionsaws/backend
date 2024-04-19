@@ -29,7 +29,7 @@ const reviewSchema = new Schema({
   ratings:{
     type:Number
   }
-},{timestamps:'true'});
+},{timestamps:true});
 
 const Review = mongoose.model('reviews', reviewSchema);
 
