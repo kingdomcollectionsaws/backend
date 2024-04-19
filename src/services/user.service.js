@@ -41,8 +41,10 @@ const updateUser = async(data,userId)=>{
         user.firstName = firstName || user.firstName ;
         user.lastName = lastName || user.lastName;
         user.email = email || user.email;
+       if(password){
         password = await bcrypt.hash(password,8);
         user.password =  password ||  user.password ;
+       }
         user.mobile = mobile || user.mobile;
         user.role = 'CUSTOMER' || user.role;
 console.log(user);
