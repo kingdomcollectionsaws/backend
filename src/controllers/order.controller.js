@@ -16,7 +16,7 @@ const createOrder = async (req, res) => {
 
 const findOrderById = async (req, res) => {
   const user = req.user;
-  // console.log("userr ",user,req.body)
+ console.log("userr ",user,req.body)
   try {
     let order = await orderService.findOrderById(req.params.id);
 
