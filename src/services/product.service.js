@@ -56,6 +56,7 @@ async function createProduct(reqData) {
     sizes: reqData.sizes,
     quantity: reqData.quantity,
     category:reqData.category,
+    slug:reqData.slug,
   });
 
   const savedProduct = await product.save();
