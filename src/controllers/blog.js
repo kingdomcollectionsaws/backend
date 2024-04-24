@@ -24,6 +24,15 @@ const getblog = async(req, res)=>{
         console.log(error.message);
     }
 }
+const getblogbyslug = async(req, res)=>{
+    try {
+        const {slug} = req.params;
+        const blog =  await Blog.findOne({slug:slug})
+        res.status(200).json(blog)
+    } catch (error) {
+        console.log(error.message);
+    }
+}
 const deleteblog = async(req, res)=>{
     try {
         const {id} =req.body;
@@ -48,4 +57,4 @@ const updateblog = async(req, res)=>{
         console.log(error.message);
     }
 }
-module.exports={createblog,getblog,deleteblog,updateblog}
+module.exports={createblog,getblog,deleteblog,updateblog,getblogbyslug}
