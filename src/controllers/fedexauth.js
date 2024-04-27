@@ -35,17 +35,18 @@ const genrateFedexToken = async()=>{
         "shipper": {
           "address": {
             "streetLines": [
-              '1550 Union Blvd','Suite 302'
+              "1550 Union Blvd,Suite 302"
             ],
             "city": "Beverly Hills",
             "countryCode": "US",
-            "stateOrProvinceCode":"AL"
+            "stateOrProvinceCode":"CA",
+            "postalCode": "90210"
           },
           "contact": {
             "personName":"tawfeeq",
-            "phoneNumber": "1234567890",
-          },
-       
+            "phoneNumber": "1234567890"
+          }
+
         },
         "recipients": [
           {
@@ -56,38 +57,40 @@ const genrateFedexToken = async()=>{
               ],
               "city": "Beverly Hills",
               "countryCode": "US",
+              "stateOrProvinceCode":"CA",
+              "postalCode": "90210"
             },
             "contact": {
               "personName":"tawfeeqah",
-              "phoneNumber": "1234567890",
-            },
+              "phoneNumber": "1234567890"
+            }
           }
         ],
         "pickupType": "USE_SCHEDULED_PICKUP",
         "serviceType": "STANDARD_OVERNIGHT",
         "packagingType": "FEDEX_PAK",
         "shippingChargesPayment": {
-          "paymentType": "SENDER",
+          "paymentType": "SENDER"
         },
         "labelSpecification": {
           
         
           "labelStockType": "PAPER_85X11_TOP_HALF_LABEL",
-          "imageType": "PDF",
+          "imageType": "PDF"
         },
         "requestedPackageLineItems": [
           {
             "weight": {
-              "units": "KG",
-              "value": 68
-            },
+              "units": "LB",
+              "value": 1
+            }
           }
         ]
       },
       "labelResponseOptions":"URL_ONLY",
       "accountNumber": {
-        "value": "740561073"
-      },
+        "value": "802255209"
+      }
     }
   //  const datas = JSON.stringify(input);
       const response = await axios.post("https://apis-sandbox.fedex.com/ship/v1/shipments", input, {
@@ -98,8 +101,8 @@ const genrateFedexToken = async()=>{
           },
       //    withCredentials: true // If needed
       });
-
-      console.log(response.data);
+const res = response.data
+      console.log(res.output);
     } catch (error) {
       
         console.log(error.message);

@@ -4,7 +4,7 @@ const Product = require("../models/product.model");
 // Create a new product
 async function createProduct(reqData) {
   let topLevel = await Category.findOne({ name: reqData.topLavelCategory });
-
+console.log(reqData);
   if (!topLevel) {
     const topLavelCategory = new Category({
       name: reqData.topLavelCategory,
@@ -57,6 +57,9 @@ async function createProduct(reqData) {
     quantity: reqData.quantity,
     category:reqData.category,
     slug:reqData.slug,
+    height:reqData.height,
+    width:reqData.width,
+    materials:reqData.materials,
   });
 
   const savedProduct = await product.save();

@@ -56,6 +56,16 @@ const productSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  materials:{
+    type: String,
+  },
+  width:{
+    type: String,
+  },
+  height:{
+    type:String
+  },
+
   category: {
     type:String,
     require:true
