@@ -19,7 +19,7 @@ const createReview = async (req, res) => {
 };
 const allProductsReviews = async(req,res)=>{
   try {
-    const reviews = await Review.find();
+    const reviews = await Review.find().populate("user").populate("product");
     res.json(reviews)
   
 } catch (error) {

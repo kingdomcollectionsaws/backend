@@ -1,3 +1,4 @@
+const CartItem = require("../models/cartItem.model.js");
 const cartItemService=require("../services/cartItem.service.js")
 async function updateCartItem(req, res) {
 
@@ -23,9 +24,10 @@ async function removeCartItem(req, res) {
 
       return res.status(200).send({message:"item removed",status:true});
     } catch (err) {
-        console.log("error",err.message)
-      return res.status(500).json({ error: err.message });
+        console.log("errors",err)
+      return res.status(500).json({ error: err.message,msg:'ddd' });
     }
 }
 
-module.exports={updateCartItem,removeCartItem};
+
+module.exports={updateCartItem,removeCartItem,};

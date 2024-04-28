@@ -30,7 +30,7 @@ async function getAllReview(productId) {
     throw new Error("product not found with id ", productId)
   }
   
-  const reviews = await Review.find({ product: productId }).populate("user");
+  const reviews = await Review.find({ product: productId }).populate("user").populate("product");
   console.log("reviews ",reviews)
   return reviews
 }
