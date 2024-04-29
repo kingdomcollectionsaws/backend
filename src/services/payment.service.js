@@ -28,8 +28,8 @@ const createPaymentLink= async (orderId)=>{
          line_items:line_item,
          mode:"payment",
          billing_address_collection:"auto",
-          success_url:`${process.env.FRONTEND_URL}/account/order/${orderId}/{CHECKOUT_SESSION_ID}`,
-         cancel_url:`${process.env.FRONTEND_URL}/cart`,
+          success_url:`https://662f272555bede00083d765a--kikingdomcollections.netlify.app/account/order/${orderId}/{CHECKOUT_SESSION_ID}`,
+         cancel_url:`https://662f272555bede00083d765a--kikingdomcollections.netlify.app/paynment/paymentcanceled`,
          })
 console.log({id:session.id});
         return({id:session.id})
