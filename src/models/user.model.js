@@ -26,6 +26,10 @@ const userSchema = new mongoose.Schema({
   mobile: {
     type: Number,
   },
+  joiningBonus:{
+    type: Number,
+   default:50
+  },
   addresses: 
     {
         type: mongoose.Schema.Types.ObjectId,

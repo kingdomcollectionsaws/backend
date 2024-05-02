@@ -17,8 +17,14 @@ const createUser = async (userData)=>{
         }
 
         password=await bcrypt.hash(password,8);
+        let   joiningBonus;
+        if(role == 'GUEST'){
+           joiningBonus = 0
+        }else{
+            joiningBonus=50
+        }
     
-        const user=await User.create({firstName,lastName,email,password,role,mobile})
+        const user=await User.create({firstName,lastName,email,password,role,joiningBonus})
 
         console.log("user ",user)
     
@@ -32,7 +38,7 @@ const createUser = async (userData)=>{
 }
 const updateUser = async(data,userId)=>{
     try {
-        let {firstName,lastName,email,password,mobile} = data;
+        let {firstName,lastName,email,password,mobile,joiningBonus} = data;
         let user = await User.findById(userId);
         if(!user){
             return {msg:"no user found",success:true}
@@ -47,6 +53,8 @@ const updateUser = async(data,userId)=>{
        }
         user.mobile = mobile || user.mobile;
         user.role = 'CUSTOMER' || user.role;
+        user.joiningBonus = joiningBonus || user.joiningBonus
+        user
 console.log(user);
         user.save()
         return {msg:"user updated successfully",success:true}

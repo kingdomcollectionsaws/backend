@@ -1,4 +1,5 @@
 
+const User = require("../models/user.model.js");
 const orderService=require("../services/order.service.js");
 const stripe = require('stripe')(process.env.STRIPE_KEY)
 
@@ -8,7 +9,9 @@ const createPaymentLink= async (orderId)=>{
 
     try {
         const order = await orderService.findOrderById(orderId);
-
+        const user = await User.findById(order.user);
+        
+        let d = order.orderItems.length
         const line_item = order.orderItems.map((i)=>(
          {
           price_data:{
@@ -18,20 +21,22 @@ const createPaymentLink= async (orderId)=>{
                 images:[i.product.imageUrl[0]]  
              },
             // unit_amount:Math.floor(order.totalPrice*100)
-             unit_amount:Math.floor(i.product.discountedPrice*100)
+             unit_amount:Math.ceil(i.product.discountedPrice*100-user.joiningBonus*100/d)
           },
           quantity:i.quantity
          }
         ))
         const session = await stripe.checkout.sessions.create({
-          payment_method_types:["card"],
+        payment_method_types:["card"],
          line_items:line_item,
          mode:"payment",
          billing_address_collection:"auto",
-          success_url:`https://662f272555bede00083d765a--kikingdomcollections.netlify.app/account/order/${orderId}/{CHECKOUT_SESSION_ID}`,
-         cancel_url:`https://662f272555bede00083d765a--kikingdomcollections.netlify.app/paynment/paymentcanceled`,
+          success_url:`http://localhost:5173/account/order/${orderId}/{CHECKOUT_SESSION_ID}`,
+         cancel_url:`http://localhost:5173/paynment/paymentcanceled`,
          })
 console.log({id:session.id});
+user.joiningBonus = 0;
+user.save()
         return({id:session.id})
     
         // Return the payment link URL and ID in the response

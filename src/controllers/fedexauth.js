@@ -1,4 +1,5 @@
 const axios = require('axios');
+const Order = require('../models/order.model');
 
 // Define your JSON payload
 const genrateFedexToken = async()=>{
@@ -24,27 +25,30 @@ const genrateFedexToken = async()=>{
 }
  
 
- const createShipping = async()=>{
+ const createShipping = async(req,res)=>{
     try {
-        
+        const data= req.body;
+        const  shiperAddress= data.shiperAddress;
+        const shipingAddress = data.shipingAddress;
+        const orderdata = data.orderdata;
         const token = await genrateFedexToken();
-     
+     console.log(orderdata._id);
         console.log("token",token);
      const input ={
       "requestedShipment": {
         "shipper": {
           "address": {
             "streetLines": [
-              "1550 Union Blvd,Suite 302"
+              shiperAddress.streetAddress
             ],
-            "city": "Beverly Hills",
-            "countryCode": "US",
-            "stateOrProvinceCode":"CA",
-            "postalCode": "90210"
+            "city":  shiperAddress.city,
+            "countryCode":  shiperAddress.country.toUpperCase(),
+            "stateOrProvinceCode": shiperAddress.state.toUpperCase(),
+            "postalCode":  shiperAddress.zipCode
           },
           "contact": {
-            "personName":"tawfeeq",
-            "phoneNumber": "1234567890"
+            "personName":shiperAddress.name,
+            "phoneNumber": shiperAddress.mobile
           }
 
         },
@@ -52,17 +56,16 @@ const genrateFedexToken = async()=>{
           {
             "address": {
               "streetLines": [
-                "10 FedEx Parkway",
-                "Suite 302"
+                shipingAddress.streetAddress
               ],
-              "city": "Beverly Hills",
-              "countryCode": "US",
-              "stateOrProvinceCode":"CA",
-              "postalCode": "90210"
+              "city": shipingAddress.city,
+              "countryCode": shipingAddress.country.toUpperCase(),
+              "stateOrProvinceCode":shipingAddress.state.toUpperCase(),
+              "postalCode": shipingAddress.zipCode
             },
             "contact": {
-              "personName":"tawfeeqah",
-              "phoneNumber": "1234567890"
+              "personName":shipingAddress.name,
+              "phoneNumber": shipingAddress.mobile
             }
           }
         ],
@@ -83,7 +86,8 @@ const genrateFedexToken = async()=>{
             "weight": {
               "units": "LB",
               "value": 1
-            }
+            },
+           
           }
         ]
       },
@@ -91,6 +95,7 @@ const genrateFedexToken = async()=>{
       "accountNumber": {
         "value": "802255209"
       }
+
     }
   //  const datas = JSON.stringify(input);
       const response = await axios.post("https://apis-sandbox.fedex.com/ship/v1/shipments", input, {
@@ -101,15 +106,30 @@ const genrateFedexToken = async()=>{
           },
       //    withCredentials: true // If needed
       });
-const res = response.data
-      console.log(res.output);
+const responsedata = response.data;
+ res.status(200).send(responsedata)
+ console.log(responsedata)
+ if(responsedata){
+  await Order.findByIdAndUpdate(orderdata._id,{trackingId:responsedata.output.transactionShipments[0].
+    masterTrackingNumber});
+ }
     } catch (error) {
       
         console.log(error.message);
     }
  }
- createShipping()
+ module.exports={createShipping}
 
+
+//  "dimensions": {
+//   "height": {
+//       "units": "CM",
+//       "value": 20
+//   },
+//   "width": {
+//       "units": "CM",
+//       "value": 30
+//   },}
  /*  const input ={
       "requestedShipment": {
         //"shipDatestamp": "2019-10-14",

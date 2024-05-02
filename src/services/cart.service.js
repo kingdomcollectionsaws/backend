@@ -13,8 +13,8 @@ async function createCart(user) {
 
 // Find a user's cart and update cart details
 async function findUserCart(userId) {
-  let cart =await Cart.findOne({ user: userId })
-  
+  let cart =await Cart.findOne({ user: userId });
+  let user = await User.findById(userId)
   let cartItems=await CartItem.find({cart:cart._id}).populate("product")
 
   cart.cartItems=cartItems
@@ -33,7 +33,7 @@ async function findUserCart(userId) {
 
   cart.totalPrice = totalPrice;
   cart.totalItem = totalItem;
-  cart.totalDiscountedPrice = totalDiscountedPrice;
+  cart.totalDiscountedPrice = totalDiscountedPrice- user.joiningBonus ;
   cart.discounte = totalPrice - totalDiscountedPrice;
 
   // const updatedCart = await cart.save();

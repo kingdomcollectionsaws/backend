@@ -109,7 +109,7 @@ async function usersOrderHistory(userId) {
         populate: {
           path: "product",
         },
-      })
+      }).populate("shippingAddress")
       .lean();
 
 
@@ -125,7 +125,7 @@ async function getAllOrders() {
     populate: {
       path: "product",
     },
-  })
+  }).populate("shippingAddress")
   .lean();;
 }
 
