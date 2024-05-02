@@ -13,6 +13,5 @@ router.put("/:orderId/deliver",authenticate,adminOrderController.deliverOrder);
 router.put("/:orderId/cancel",authenticate,adminOrderController.cancelledOrder);
 router.delete("/:orderId/delete",authenticate,adminOrderController.deleteOrder);
 router.post("/fedex/shiping",authenticate,createShipping);
-router.get("/location",getlocation);
 
 module.exports=router;
