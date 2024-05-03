@@ -8,23 +8,6 @@ app.get("/",(req,res)=>{
     return res.status(200).send({message:"welcome to ecommerce api - node"})
 })
 
-const { default: axios } = require("axios")
-
-const getlocation = async(req,res)=>{
-    try {
-        const response = await fetch('http://www.geoplugin.net/json.gp');
-        // if (!response.ok) {
-        //   throw new Error('Failed to fetch data');
-        // }
-        const data = await response.json();
-        console.log(data.geoplugin_countryCode);
-       return data
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-}
-getlocation()
-module.exports = getlocation;
 const authRouter=require("./routes/auth.routes.js")
 app.use("/auth",authRouter)
 
