@@ -1,4 +1,3 @@
-// const { default: axios } = require("axios")
 
 // const getlocation = async(req,res)=>{
 //     try {

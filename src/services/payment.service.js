@@ -21,7 +21,7 @@ const createPaymentLink= async (orderId)=>{
                 images:[i.product.imageUrl[0]]  
              },
             // unit_amount:Math.floor(order.totalPrice*100)
-             unit_amount:Math.ceil(i.product.discountedPrice*100-user.joiningBonus*100/d)
+             unit_amount:Math.ceil(i.product.discountedPrice)*100
           },
           quantity:i.quantity
          }

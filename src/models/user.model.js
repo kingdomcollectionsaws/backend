@@ -28,7 +28,6 @@ const userSchema = new mongoose.Schema({
   },
   joiningBonus:{
     type: Number,
-   default:50
   },
   addresses: 
     {

@@ -4,7 +4,7 @@ const SECERET_KEY=process.env.SECERET_KEY
 
 const generateToken=(userId)=>{
 
-    const token=jwt.sign({userId},SECERET_KEY,{ expiresIn: '48h' })
+    const token=jwt.sign({userId},SECERET_KEY,{ expiresIn: '7d' })
     return token;
 }
 
