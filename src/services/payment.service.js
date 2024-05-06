@@ -16,6 +16,7 @@ const createPaymentLink= async (orderId)=>{
          {
           price_data:{
             currency:"usd",
+            
             product_data: {
                  name:i.product.title,
                 images:[i.product.imageUrl[0]]  
@@ -27,10 +28,12 @@ const createPaymentLink= async (orderId)=>{
          }
         ))
         const session = await stripe.checkout.sessions.create({
-        payment_method_types:["card"],
-         line_items:line_item,
+      // payment_method_types:["card","Apple Pay"],
+      payment_method_types:  ["card"],
+  
          mode:"payment",
          billing_address_collection:"auto",
+        
           success_url:`http://localhost:5173/account/order/${orderId}/{CHECKOUT_SESSION_ID}`,
          cancel_url:`http://localhost:5173/paynment/paymentcanceled`,
          })
