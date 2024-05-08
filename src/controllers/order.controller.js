@@ -15,13 +15,12 @@ const createOrder = async (req, res) => {
 };
 
 const findOrderById = async (req, res) => {
-  const user = req.user;
- console.log("userr ",user,req.body)
   try {
     let order = await orderService.findOrderById(req.params.id);
 
-    return res.status(201).send(order);
+    return res.status(200).send(order);
   } catch (error) {
+    
     return res.status(500).send(error.message);
   }
 };

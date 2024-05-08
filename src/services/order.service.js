@@ -90,12 +90,17 @@ async function cancelledOrder(orderId) {
 }
 
 async function findOrderById(orderId) {
-  const order = await Order.findById(orderId)
-    .populate("user")
-    .populate({path:"orderItems", populate:{path:"product"}})
-    .populate("shippingAddress");
+  try {
+    const order = await Order.findById(orderId)
+      .populate("user")
+      .populate({ path: "orderItems", populate: { path: "product" } })
+      .populate("shippingAddress");
   
-  return order;
+    return order;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error finding order by ID"); // You can customize the error message if needed
+  }
 }
 
 async function usersOrderHistory(userId) {
