@@ -24,7 +24,17 @@ const genrateFedexToken = async()=>{
     }
 }
  
+const customTrackingId = async(req,res)=>{
+const  {id,url,trackingId} = req.body;
+console.log(id,url,trackingId);
+  try {
+    await Order.findByIdAndUpdate(id,{trackingId:trackingId,trackingUrl:url});
+    res.status(200).send({msg:'true'})
+  } catch (error) {
+    res.status(500).send(error);
+  }
 
+}
  const createShipping = async(req,res)=>{
     try {
         const data= req.body;
@@ -108,17 +118,16 @@ const genrateFedexToken = async()=>{
       });
 const responsedata = response.data;
  res.status(200).send(responsedata)
- console.log(responsedata)
  if(responsedata){
   await Order.findByIdAndUpdate(orderdata._id,{trackingId:responsedata.output.transactionShipments[0].
     masterTrackingNumber});
  }
     } catch (error) {
       
-        console.log(error.message);
+      res.status(500).send(error);
     }
  }
- module.exports={createShipping}
+ module.exports={createShipping,customTrackingId}
 
 
 //  "dimensions": {

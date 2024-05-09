@@ -8,6 +8,6 @@ const { sendpasswordchangelink, resetpassword } = require("../controllers/forgot
 router.post("/signin",authController.login)
 router.post("/signup",authController.register)
 router.post("/forgotpassword",sendpasswordchangelink)
-router.get("/reset-password/:id/:token",resetpassword)
+router.put("/reset-password/:id/:token",resetpassword)
 
 module.exports=router;

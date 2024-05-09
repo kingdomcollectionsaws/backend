@@ -61,7 +61,10 @@ const orderSchema = new Schema({
   },
   trackingId:{
     type:String
-  }
+  },
+  trackingUrl:{
+    type:String
+  },
 },{timestamps:true});
 
 const Order = mongoose.model('orders', orderSchema);

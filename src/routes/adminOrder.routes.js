@@ -2,7 +2,7 @@ const express=require("express");
 const authenticate = require("../middleware/authenticat.js");
 const router=express.Router();
 const adminOrderController=require("../controllers/adminOrder.controller.js");
-const { createShipping } = require("../controllers/fedexauth.js");
+const { createShipping, customTrackingId } = require("../controllers/fedexauth.js");
 const getlocation = require("../services/location.js");
 router.get("/",authenticate,adminOrderController.getAllOrders);
 router.get("/alladdress",authenticate,adminOrderController.getAllOrdersAddress);
@@ -13,5 +13,6 @@ router.put("/:orderId/deliver",authenticate,adminOrderController.deliverOrder);
 router.put("/:orderId/cancel",authenticate,adminOrderController.cancelledOrder);
 router.delete("/:orderId/delete",authenticate,adminOrderController.deleteOrder);
 router.post("/fedex/shiping",authenticate,createShipping);
+router.put("/trakingId",authenticate,customTrackingId);
 
 module.exports=router;
