@@ -10,33 +10,29 @@ const productSchema = new mongoose.Schema({
     type: String,
     // required: true,
   },
-  price: {
-    type: Number,
-    // required: true,
-  },
-  discountedPrice: {
-    type: Number,
-  },
-  discountPersent: {
-    type: Number,
-  },
+
   quantity: {
     type: Number,
     // required: true,
   },
-  brand: {
-    type: String,
-  },
-  color: {
-    type: String,
-  },
  slug: {
     type: String,
   },
-  sizes: [{
+  variations:[
+    {images:[{
     type:String
+  }],
+  price:{
+    type: Number,
 
-  }], 
+  },
+  discountedPrice: {
+    type: Number,
+  },
+  style: {
+    type: String,
+  },
+}],
   imageUrl:[{
     type: String,
   }],

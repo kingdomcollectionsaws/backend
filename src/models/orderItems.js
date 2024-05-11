@@ -8,9 +8,14 @@ const orderItemSchema = new Schema({
     ref: 'products',
     required: true,
   },
-  sizes:[ {
-    type: String,
-  }],
+  style: {type: String},
+  image: {type: String},
+  variationId: {type: String},
+  quantity: {
+    type: Number,
+    required: true,
+    default: 1,
+  },
   quantity: {
     type: Number,
     required: true,

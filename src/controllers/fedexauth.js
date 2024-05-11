@@ -26,7 +26,6 @@ const genrateFedexToken = async()=>{
  
 const customTrackingId = async(req,res)=>{
 const  {id,url,trackingId} = req.body;
-console.log(id,url,trackingId);
   try {
     await Order.findByIdAndUpdate(id,{trackingId:trackingId,trackingUrl:url});
     res.status(200).send({msg:'true'})

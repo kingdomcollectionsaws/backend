@@ -2,11 +2,8 @@
 const User = require("../models/user.model.js");
 const orderService=require("../services/order.service.js");
 const stripe = require('stripe')(process.env.STRIPE_KEY)
-
 const createPaymentLink= async (orderId)=>{
     // const { amount, currency, receipt, notes } = reqData;
-    
-
     try {
       const order = await orderService.findOrderById(orderId);
       const user = await User.findById(order.user);
@@ -17,11 +14,11 @@ const createPaymentLink= async (orderId)=>{
         price_data:{
           currency:"usd",
           product_data: {
-               name:i.product.title,
-              images:[i.product.imageUrl[0]]  
+               name:i.title,
+              images:[i.image]  
            },
           // unit_amount:Math.floor(order.totalPrice*100)
-           unit_amount:Math.ceil(i.product.discountedPrice*100-user.joiningBonus*100/d)
+           unit_amount:Math.ceil(i.discountedPrice*100)
         },
         quantity:i.quantity
        }
@@ -49,7 +46,6 @@ user.save()
         throw new Error(error.message);
       }
 }
-
 const updatePaymentInformation=async(reqData)=>{
     const paymentId = reqData.payment_id;
   const orderId = reqData.order_id;

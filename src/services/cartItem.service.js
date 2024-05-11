@@ -1,4 +1,6 @@
+
 const CartItem = require("../models/cartItem.model.js");
+const Product = require("../models/product.model.js");
 const userService=require("../services/user.service.js");
 
 
@@ -14,8 +16,10 @@ async function createCartItem(cartItemData) {
 
 // Update an existing cart item
 async function updateCartItem(userId, cartItemId, cartItemData) {
-  const item = await findCartItemById(cartItemId)
-   //console.log("cartItemData ",item)
+  const item = await findCartItemById(cartItemId);
+  const product = await Product.findById(item.product);
+ const variation =  product.variations.find(obj => obj.style == item.style)
+   console.log("cartItemData ",variation)
 
   if(!item){
     throw new Error("cart item not found : ",cartItemId)
@@ -29,10 +33,10 @@ async function updateCartItem(userId, cartItemId, cartItemData) {
  
 
   if (user.id === userId.toString()) {
-   item.sizes = cartItemData.sizes;
+   item.style = variation.style;
     item.quantity = cartItemData.quantity;
-    item.price = item.quantity * item.product.price;
-    item.discountedPrice = item.quantity * item.product.discountedPrice;
+    item.price = item.quantity * variation.price;
+    item.discountedPrice = item.quantity * variation.discountedPrice;
     const updatedCartItem = await item.save();
     return updatedCartItem;
   } else {
