@@ -4,6 +4,4 @@ const { updateproductvariations, addproductvariations, deleteproductvariations }
 router.put('/variations/update', updateproductvariations);
 router.post('/variations/add', addproductvariations);
 router.delete('/variations/delete', deleteproductvariations);
-
-
 module.exports=router;
