@@ -129,6 +129,47 @@ async function createMultipleProduct(products) {
   }
 }
 
+const updateproductvariations = async(req,res)=>{
+  const { product_Id,variationId,images,style,price,discountedPrice} =  req.body
+  try {
+
+    const product = await Product.findById(product_Id);
+    let variation =  product.variations.find(obj => obj._id == variationId)
+   const index = product.variations.indexOf(variation.images);
+   product.variations[index].discountedPrice = discountedPrice || product.variations[index].discountedPrice
+   product.variations[index].price = price || product.variations[index].price
+   product.variations[index].images = images || product.variations[index].images
+   product.variations[index].style = style || product.variations[index].style
+  await product.save()
+    res.status(200).send({success:true,product})
+  } catch (error) {
+    res.status(500).send(error)
+    
+  }
+}
+const addproductvariations = async(req,res)=>{
+  try {
+    const {id,variationData} =  req.body
+    const product = await Product.findById(id);
+    res.send(product)
+
+  } catch (error) {
+    
+  }
+}
+const deleteproductvariations = async(req,res)=>{
+  try {
+    const {id,variationId} =  req.body
+    const product = await Product.findById(id);
+    console.log(product);
+    res.send(product)
+
+  } catch (error) {
+    console.log("product");
+    res.status(500).send({msg:error})
+  }
+}
+
 module.exports = {
   createProduct,
   deleteProduct,
@@ -136,4 +177,7 @@ module.exports = {
   getAllProducts,
   findProductById,
   createMultipleProduct,
+  updateproductvariations,
+  addproductvariations,
+  deleteproductvariations 
 };

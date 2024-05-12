@@ -20,6 +20,10 @@ app.use("/api/products",productRouter);
 const adminProductRouter=require("./routes/product.admin.routes.js");
 app.use("/api/admin/products",adminProductRouter);
 
+
+const adminVariationRouter=require("./routes/variation.route.js");
+app.use("/api/admin/variation",adminVariationRouter);
+
 const cartRouter=require("./routes/cart.routes.js")
 app.use("/api/cart", cartRouter);
 

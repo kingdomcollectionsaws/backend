@@ -5,7 +5,7 @@ async function updateCartItem(req, res) {
     const user = req.user;
     try {
         const updatedCartItem=await cartItemService.updateCartItem(user._id,req.params.id,req.body);
-       // console.log(user._id,req.params.id,req.body);
+        console.log(req.body);
       return res.status(200).send(updatedCartItem);
     } catch (err) {
         console.log("error",err.message)
