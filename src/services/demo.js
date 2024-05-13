@@ -60,7 +60,7 @@ async function createProduct(req) {
   });
 
   const savedProduct = await product.save();
-  console.log('products - ', product);
+
 
   return savedProduct;
 }
@@ -68,7 +68,7 @@ async function createProduct(req) {
 async function deleteProduct(productId) {
   const product = await findProductById(productId);
 
-  console.log('delete product ', product.getId(), ' - ', productId);
+
   product.getSizes().clear();
   await product.remove();
 
@@ -103,7 +103,7 @@ async function findProductById(id) {
 }
 
 async function findProductByCategory(category) {
-  console.log('category --- ', category);
+
 
   return Product.find({ category });
 }

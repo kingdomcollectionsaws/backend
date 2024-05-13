@@ -5,12 +5,12 @@ const cartService = require("../services/cart.service.js");
 
 async function createOrder(user, shippAddress) {
   let address;
-   if (shippAddress._id) {
+  if (shippAddress._id) {
     let existedAddress = await Address.findById(shippAddress._id);
     address = existedAddress;
-   } else {
+  } else {
     address = new Address(shippAddress);
-   // address.user = user;
+    // address.user = user;
     await address.save();
 
     user.addresses = address;
@@ -27,7 +27,7 @@ async function createOrder(user, shippAddress) {
       quantity: item.quantity,
       style: item.style,
       image: item.image,
-      variationId:item.variationId,
+      variationId: item.variationId,
       userId: item.userId,
       discountedPrice: item.discountedPrice,
     });
@@ -46,7 +46,7 @@ async function createOrder(user, shippAddress) {
     shippingAddress: address,
     orderDate: new Date(),
     orderStatus: "PENDING", // Assuming OrderStatus is a string enum or a valid string value
-   // "paymentDetails.status": "PENDING", // Assuming PaymentStatus is nested under 'paymentDetails'
+    // "paymentDetails.status": "PENDING", // Assuming PaymentStatus is nested under 'paymentDetails'
     createdAt: new Date(),
   });
 
@@ -97,7 +97,7 @@ async function findOrderById(orderId) {
       .populate("user")
       .populate({ path: "orderItems", populate: { path: "product" } })
       .populate("shippingAddress");
-  
+
     return order;
   } catch (error) {
     console.error(error);
@@ -109,7 +109,7 @@ async function usersOrderHistory(userId) {
   try {
     const orders = await Order.find({
       user: userId,
-    // orderStatus:'PLACED'
+      // orderStatus:'PLACED'
     })
       .populate({
         path: "orderItems",
@@ -133,12 +133,12 @@ async function getAllOrders() {
       path: "product",
     },
   }).populate("shippingAddress")
-  .lean();;
+    .lean();;
 }
 
 async function deleteOrder(orderId) {
   const order = await findOrderById(orderId);
-  if(!order)throw new Error("order not found with id ",orderId)
+  if (!order) throw new Error("order not found with id ", orderId)
 
   await Order.findByIdAndDelete(orderId);
 }

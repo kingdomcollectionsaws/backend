@@ -7,15 +7,13 @@ const createPaymentLink= async (orderId)=>{
     try {
       const order = await orderService.findOrderById(orderId);
       const user = await User.findById(order.user);
-      
-      let d = order.orderItems.length
       const line_item = order.orderItems.map((i)=>(
        {
         price_data:{
           currency:"usd",
           product_data: {
-               name:i.title,
-              images:[i.image]  
+               name:i.product?.title,
+              images:[i.image]
            },
           // unit_amount:Math.floor(order.totalPrice*100)
            unit_amount:Math.ceil(i.discountedPrice*100)
@@ -24,14 +22,13 @@ const createPaymentLink= async (orderId)=>{
        }
       ))
       const session = await stripe.checkout.sessions.create({
-     // payment_method_types:["card"],
+      payment_method_types:["card"],
        line_items:line_item,
        mode:"payment",
        billing_address_collection:"auto",
-        success_url:`http://localhost:5173/account/order/${orderId}/{CHECKOUT_SESSION_ID}`,
-       cancel_url:`http://localhost:5173/paynment/paymentcanceled`,
+        success_url:`${process.env.FRONTEND_URL}/account/order/${orderId}/{CHECKOUT_SESSION_ID}`,
+       cancel_url:`${process.env.FRONTEND_URL}/paynment/paymentcanceled`,
        })
-console.log({id:session.id});
 user.joiningBonus = 0;
 user.save()
       return({id:session.id})
@@ -55,7 +52,6 @@ const updatePaymentInformation=async(reqData)=>{
     const order = await orderService.findOrderById(orderId);
     // Fetch he payment details using the payment ID
     const payment = await stripe.checkout.sessions.retrieve(paymentId);
-    console.log(payment.status );
     if (payment.status == 'complete') {
       order.paymentDetails.paymentId=paymentId;
       order.paymentDetails.status='COMPLETED'; 

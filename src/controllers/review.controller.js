@@ -13,7 +13,7 @@ const createReview = async (req, res) => {
         
     return res.status(201).send(review);
   } catch (error) {
-    console.log("error --- ", error.message)
+  
     return res.status(500).json({ error: 'Something went wrong' });
   }
 };
@@ -23,19 +23,19 @@ const allProductsReviews = async(req,res)=>{
     res.json(reviews)
   
 } catch (error) {
-  console.log(error);
+  res.json(error)
 }
 
 }
 const getAllReview = async (req, res) => {
   const productId = req.params.productId;
-  console.log("product id ",productId)
+
   try {
    
     const reviews =await reviewService.getAllReview(productId);
     return res.status(200).send(reviews);
   } catch (error) {
-    console.log("error --- ", error.message)
+   
     return res.status(500).json({ error: 'Something went wrong' });
   }
 };

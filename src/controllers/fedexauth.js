@@ -6,8 +6,8 @@ const genrateFedexToken = async()=>{
     try {
         const input = {
             "grant_type": "client_credentials",
-            "client_id": "l71af81f1f31fe4dca9fa92dd8081f0fc2",
-            "client_secret": "880dffbd5ece4c9ca0e2fb37ec6f2592"
+            "client_id": `${process.env.FEDEX_CLIENT_ID}`,
+            "client_secret": `${process.env.FEDEX_CLIENT_SECERT}`
             // Add more key-value pairs as needed
         };
 
@@ -20,7 +20,7 @@ const genrateFedexToken = async()=>{
         return response.data.access_token;
         
     } catch (error) {
-        console.log(error);
+      return error;
     }
 }
  
@@ -41,8 +41,6 @@ const  {id,url,trackingId} = req.body;
         const shipingAddress = data.shipingAddress;
         const orderdata = data.orderdata;
         const token = await genrateFedexToken();
-     console.log(orderdata._id);
-        console.log("token",token);
      const input ={
       "requestedShipment": {
         "shipper": {
@@ -102,7 +100,7 @@ const  {id,url,trackingId} = req.body;
       },
       "labelResponseOptions":"URL_ONLY",
       "accountNumber": {
-        "value": "802255209"
+        "value": `${process.env.FEDEX_ACC_NUMBER}`
       }
 
     }

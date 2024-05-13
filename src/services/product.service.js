@@ -9,11 +9,11 @@ async function createProduct(reqData) {
     description: reqData.description,
     variations: reqData.variations,
     quantity: reqData.quantity,
-    category:reqData.category,
-    slug:reqData.slug,
-    height:reqData.height,
-    width:reqData.width,
-    materials:reqData.materials,
+    category: reqData.category,
+    slug: reqData.slug,
+    height: reqData.height,
+    width: reqData.width,
+    materials: reqData.materials,
   });
 
   const savedProduct = await product.save();
@@ -66,11 +66,11 @@ async function getAllProducts(reqQuery) {
   (pageSize = pageSize || 50), (pageNumber = pageNumber || 1);
   let query = Product.find().populate("category");
 
-if(!brand==null){
-  query = Product.find({brand:brand})
-}
+  if (!brand == null) {
+    query = Product.find({ brand: brand })
+  }
   if (category) {
-    const existCategory = await Product.find({  category:category });  
+    const existCategory = await Product.find({ category: category });
     return existCategory
   }
 
@@ -83,7 +83,7 @@ if(!brand==null){
 
   if (sizes) {
     const sizesSet = new Set(sizes);
-    
+
     query = query.where("sizes.name").in([...sizesSet]);
   }
 
@@ -120,7 +120,7 @@ if(!brand==null){
   const totalPages = Math.ceil(totalProducts / pageSize);
 
 
-  return { content: products, currentPage: pageNumber, totalPages:totalPages };
+  return { content: products, currentPage: pageNumber, totalPages: totalPages };
 }
 
 async function createMultipleProduct(products) {
@@ -129,52 +129,52 @@ async function createMultipleProduct(products) {
   }
 }
 
-const updateproductvariations = async(req,res)=>{
-  const { product_Id,variationId,images,style,price,discountedPrice} =  req.body
-  console.log(style,price,discountedPrice);
+const updateproductvariations = async (req, res) => {
+  const { product_Id, variationId, images, style, price, discountedPrice } = req.body
+
   try {
 
     const product = await Product.findById(product_Id);
-    let variation =  product.variations.find(obj => obj._id == variationId)
-   const index = product.variations.indexOf(variation);
-   console.log(index);
-   product.variations[index].discountedPrice = discountedPrice || product.variations[index].discountedPrice
-   product.variations[index].price = price || product.variations[index].price
-   product.variations[index].images = images || product.variations[index].images
-   product.variations[index].style = style || product.variations[index].style
-  await product.save()
-    res.status(200).send({success:true})
+    let variation = product.variations.find(obj => obj._id == variationId)
+    const index = product.variations.indexOf(variation);
+
+    product.variations[index].discountedPrice = discountedPrice || product.variations[index].discountedPrice
+    product.variations[index].price = price || product.variations[index].price
+    product.variations[index].images = images || product.variations[index].images
+    product.variations[index].style = style || product.variations[index].style
+    await product.save()
+    res.status(200).send({ success: true })
   } catch (error) {
     res.status(500).send(error)
-    
+
   }
 }
-const addproductvariations = async(req,res)=>{
+const addproductvariations = async (req, res) => {
   try {
-    const { product_Id,images,style,price,discountedPrice} =  req.body
+    const { product_Id, images, style, price, discountedPrice } = req.body
     const product = await Product.findById(product_Id);
     const newvariation = {
-      images:images,
-      style:style,
-      price:price,
-      discountedPrice:discountedPrice
+      images: images,
+      style: style,
+      price: price,
+      discountedPrice: discountedPrice
     }
     product.variations.push(newvariation);
     await product.save();
-    res.status(200).send({success:true})
+    res.status(200).send({ success: true })
   } catch (error) {
     res.status(500).send(error)
   }
 }
-const deleteproductvariations = async(req,res)=>{
+const deleteproductvariations = async (req, res) => {
   try {
-    const {product_Id,variationId,} =  req.body
+    const { product_Id, variationId, } = req.body
     const product = await Product.findById(product_Id);
-    let variation =  product.variations.find(obj => obj._id == variationId)
-   const index = product.variations.indexOf(variation);
-   product.variations.splice(index,1)
-   await product.save();
-   res.status(200).send({success:true})
+    let variation = product.variations.find(obj => obj._id == variationId)
+    const index = product.variations.indexOf(variation);
+    product.variations.splice(index, 1)
+    await product.save();
+    res.status(200).send({ success: true })
   } catch (error) {
     res.status(500).send(error)
   }
@@ -189,5 +189,5 @@ module.exports = {
   createMultipleProduct,
   updateproductvariations,
   addproductvariations,
-  deleteproductvariations 
+  deleteproductvariations
 };

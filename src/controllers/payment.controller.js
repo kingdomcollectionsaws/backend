@@ -1,9 +1,9 @@
-const paymentService=require("../services/payment.service.js")
+const paymentService = require("../services/payment.service.js")
 
-const createPaymentLink=async(req,res)=>{
+const createPaymentLink = async (req, res) => {
 
     try {
-        const paymentLink=await paymentService.createPaymentLink(req.params.id);
+        const paymentLink = await paymentService.createPaymentLink(req.params.id);
         return res.status(200).send(paymentLink)
     } catch (error) {
         return res.status(500).send(error.message);
@@ -11,15 +11,15 @@ const createPaymentLink=async(req,res)=>{
 
 }
 
-const updatePaymentInformation=async(req,res)=>{
+const updatePaymentInformation = async (req, res) => {
 
     try {
-       const order = await paymentService.updatePaymentInformation(req.query)
-        return res.status(200).send({message:"payment information updated",order:order})
+        const order = await paymentService.updatePaymentInformation(req.query)
+        return res.status(200).send({ message: "payment information updated", order: order })
     } catch (error) {
         return res.status(500).send(error.message);
     }
 
 }
 
-module.exports={createPaymentLink,updatePaymentInformation}
+module.exports = { createPaymentLink, updatePaymentInformation }

@@ -11,12 +11,11 @@ async function createCartItem(cartItemData) {
   return createdCartItem;
 }
 
-// Update an existing cart item
+
 async function updateCartItem(userId, cartItemId, cartItemData) {
   const item = await findCartItemById(cartItemId);
   const product = await Product.findById(item.product);
-let variation =  product.variations.find(obj => obj.style == cartItemData.style)
-   console.log("cartItemData ",cartItemData)
+let variation =  product.variations.find(obj => obj.style == cartItemData.style || obj._id == cartItemData.variationId )
 
   if(!item){
     throw new Error("cart item not found : ",cartItemId)
@@ -26,15 +25,12 @@ let variation =  product.variations.find(obj => obj.style == cartItemData.style)
   if(!user){
     throw new Error("user not found : ",userId)
   }
-
- 
-
   if (user.id === userId.toString()) {
    item.style =  cartItemData.style || item.style;
-   item.image = cartItemData.image || item.image;
-    item.quantity = cartItemData.quantity;
+   item.image = variation?.images[0] || item.image;
+   item.quantity = cartItemData.quantity;
    item.price = item.quantity * variation.price;
-    item.discountedPrice = item.quantity * variation.discountedPrice;
+   item.discountedPrice = item.quantity * variation.discountedPrice;
     const updatedCartItem = await item.save();
     return updatedCartItem;
   } else {
@@ -52,7 +48,7 @@ async function isCartItemExist(cart, product,  userId) {
 // Remove a cart item
 async function removeCartItem(userId, cartItemId) {
   // console.log(`userId - ${userId}, cartItemId - ${cartItemId}`);
-  console.log('hh',cartItemId);
+  
   const cartItem = await findCartItemById(cartItemId);
   const user = await userService.findUserById(cartItem.userId);
   const reqUser = await userService.findUserById(userId);
