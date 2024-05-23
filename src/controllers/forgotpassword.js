@@ -12,14 +12,14 @@ const sendmail = async ({ link, email }) => {
       secure: true,
       service: 'gmail',
       auth: {
-        user: 'essential662233@gmail.com',
-        pass: 'eizwyzaqfhuybnwr'
+        user: process.env.MAIL,
+        pass: process.env.MAIL_PASSWORD
       }
     });
 
     var mailOptions = {
-      from: 'essential662233@gmail.com',
-      to: 'dynotawfeeq@gmail.com',
+      from: process.env.MAIL,
+      to: email,
       subject: 'Forgot password',
       text: `Follow this link to reset yout kingdom collection password: ${link}`
     };
@@ -45,9 +45,9 @@ const sendpasswordchangelink = async (req, res) => {
       res.send({ msg: 'User not found' })
     } else {
       const token = jwt.sign({ email: email }, process.env.SECERET_KEY, { expiresIn: '5m' })
-      const link = `http://localhost:5173/reset-password/?id=${user._id}&token=${token}`
+      const link = `kingdomcollection.uk/reset-password/?id=${user._id}&token=${token}`
       sendmail({ link, email })
-      res.send({ msg: 'Email send successfully' })
+      res.send({ msg: 'Email sent successfully' })
     }
 
   } catch (error) {
@@ -55,20 +55,21 @@ const sendpasswordchangelink = async (req, res) => {
   }
 }
 const resetpassword = async (req, res) => {
-  const { id, token } = req.params;
-  let { password } = req.body
+  let { password, id, token } = req.body
   try {
 
     const verify = jwt.verify(token, process.env.SECERET_KEY);
+    console.log(id, token);
     if (verify) {
 
       password = await bcrypt.hash(password, 8);
       let user = await User.findById(id);
-      console.log(user);
-      res.send("user");
+      user.password =  password;
+      user.save()
+      res.status(200).send("password updated");
 
     } else {
-      res.send("not verifys");
+      res.status(500).send("not verifys");
     }
 
 
